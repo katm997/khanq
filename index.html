@@ -2,358 +2,286 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Tải phần mềm</title>
+<title>Kho Ứng Dụng | IT Tâm Trí Đồng Tháp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- SEO -->
+<meta name="description" content="Kho tải phần mềm Windows chính thống – .NET Framework, Office, DirectX, Ultraview.">
+<meta name="keywords" content="tải phần mềm, .net framework, office, directx, ultraview">
+<meta name="author" content="Lê Quốc Khang">
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Kho Ứng Dụng – IT Tâm Trí Đồng Tháp">
+<meta property="og:description" content="Kho tải phần mềm Windows an toàn, chính thống">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://khang.pages.dev">
+
+<link rel="preconnect" href="https://www.gstatic.com">
 
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Segoe UI", system-ui, sans-serif;
-  background: radial-gradient(circle at top, #020617, #020617);
-  color: #e5e7eb;
+:root{
+  --green:#22c55e;
+  --bg:#020617;
+  --glass:rgba(255,255,255,.05);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Segoe UI",system-ui,sans-serif;
+  background:radial-gradient(circle at top,var(--bg),var(--bg));
+  color:#e5e7eb;
 }
 
 /* ===== HEADER ===== */
-.header {
-  text-align: center;
-  padding: 40px 20px 10px;
+.header{text-align:center;padding:40px 20px 20px}
+.title{
+  font-size:32px;
+  text-shadow:0 0 15px rgba(34,197,94,.6);
 }
-
-.title-glow {
-  font-size: 30px;
-  margin: 0;
-  text-shadow:
-    0 0 12px rgba(34,197,94,.6),
-    0 0 32px rgba(34,197,94,.4);
-}
-
-.subtitle-glass {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #9ca3af;
-  opacity: .85;
-}
-
-.subtitle-glass b {
-  color: #22c55e;
-}
+.sub{margin-top:8px;font-size:14px;color:#9ca3af}
+.sub b{color:var(--green)}
 
 /* ===== SEARCH ===== */
-.search-box {
-  max-width: 420px;
-  margin: 25px auto 10px;
+.search{max-width:420px;margin:0 auto 30px}
+.search input{
+  width:100%;
+  padding:14px 18px;
+  border-radius:16px;
+  background:var(--glass);
+  border:1px solid rgba(255,255,255,.08);
+  color:#fff;
+  font-size:15px;
 }
-
-.search-box input {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.1);
-  background: rgba(255,255,255,.04);
-  color: #e5e7eb;
-  outline: none;
-  font-size: 15px;
-  transition: .25s;
-}
-
-.search-box input:focus {
-  border-color: #22c55e;
-  box-shadow: 0 0 0 3px rgba(34,197,94,.25);
-}
-
-/* ===== CONTAINER ===== */
-.container {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
+.search input:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(34,197,94,.25);
+  outline:none;
 }
 
 /* ===== GRID ===== */
-.list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+.container{max-width:1050px;margin:auto;padding:20px}
+.list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:26px;
 }
 
 /* ===== CARD ===== */
-.item {
-  position: relative;
-  background: rgba(255,255,255,.04);
-  backdrop-filter: blur(14px);
-  border-radius: 20px;
-  padding: 22px;
-  box-shadow: 0 20px 50px rgba(0,0,0,.45);
-  overflow: hidden;
-  animation: fadeUp .5s ease forwards;
+.item{
+  position:relative;
+  padding:22px;
+  border-radius:22px;
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  box-shadow:0 20px 40px rgba(0,0,0,.45);
+  animation:fadeUp .45s ease forwards;
+  transition:.3s;
 }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
+.item:hover{transform:translateY(-6px)}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(25px)}
+  to{opacity:1;transform:none}
 }
-
-/* viền theo chuột */
-.item::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 2px;
-  border-radius: 20px;
-  background: radial-gradient(
+.item::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  padding:2px;
+  border-radius:22px;
+  background:radial-gradient(
     180px circle at var(--x) var(--y),
-    #22c55e,
-    transparent 60%
+    var(--green),transparent 60%
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  pointer-events: none;
+  -webkit-mask-composite:xor;
+  pointer-events:none;
 }
 
-.item b {
-  font-size: 20px;
-  display: block;
-  margin-bottom: 18px;
+.item b{
+  font-size:20px;
+  display:block;
+  margin-bottom:12px;
+}
+
+/* ===== META ===== */
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px;
+}
+.badge{
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(34,197,94,.15);
+  color:#86efac;
+  border:1px solid rgba(34,197,94,.35);
 }
 
 /* ===== BUTTON ===== */
-.btn {
-  width: 100%;
-  padding: 12px 0;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 15px;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: #020617;
-  transition: .25s;
+.btn{
+  width:100%;
+  padding:13px;
+  border-radius:14px;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--green),#16a34a);
+  transition:.25s;
+}
+.btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(34,197,94,.6);
 }
 
-.btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(34,197,94,.6);
+/* glow loading */
+.btn.loading{
+  pointer-events:none;
+  animation:pulse 1s ease-in-out infinite;
 }
-
-/* ===== STATES ===== */
-.loading, .empty {
-  grid-column: 1 / -1;
-  text-align: center;
-  opacity: .6;
-  padding: 40px 0;
+@keyframes pulse{
+  0%{
+    box-shadow:0 0 0 rgba(34,197,94,0);
+    filter:brightness(1);
+  }
+  50%{
+    box-shadow:0 0 25px rgba(34,197,94,.9);
+    filter:brightness(1.25);
+  }
+  100%{
+    box-shadow:0 0 0 rgba(34,197,94,0);
+    filter:brightness(1);
+  }
 }
 
 /* ===== FOOTER ===== */
-.footer {
-  position: fixed;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 13px;
-  opacity: .5;
+.footer{
+  text-align:center;
+  font-size:13px;
+  opacity:.5;
+  padding:20px;
 }
 
-/* ===== FLOAT CONTACT ===== */
-.contact-fab {
-  position: fixed;
-  right: 22px;
-  bottom: 22px;
-  z-index: 9999;
+/* ===== FAB ===== */
+.fab{position:fixed;right:22px;bottom:22px}
+.fab-main{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),#16a34a);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
 }
-
-.fab-main {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 0 25px rgba(34,197,94,.7);
-  transition: .3s;
+.fab-menu{
+  position:absolute;
+  bottom:70px;right:0;
+  display:flex;flex-direction:column;
+  gap:12px;
+  opacity:0;pointer-events:none;
+  transition:.3s;
 }
-
-.fab-main:hover {
-  transform: scale(1.08);
+.fab.active .fab-menu{opacity:1;pointer-events:auto}
+.fab-item{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--glass);
+  display:flex;align-items:center;justify-content:center;
 }
-
-.fab-main img {
-  width: 26px;
-}
-
-.fab-menu {
-  position: absolute;
-  bottom: 70px;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(10px);
-  transition: .3s ease;
-}
-
-.contact-fab.active .fab-menu {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-
-.fab-item {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,.4);
-  transition: .25s;
-}
-
-.fab-item:hover {
-  transform: scale(1.15);
-}
-
-.fab-item img {
-  width: 24px;
-}
-  .fab-main {
-  flex-direction: column;
-  gap: 2px;
-}
-
-.fab-text {
-  font-size: 11px;
-  font-weight: 600;
-  color: #020617;
-  line-height: 1;
-}
-
-.fab-icon {
-  font-size: 18px;
-}
+.fab-item img{width:24px}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <h1 class="title-glow">📦 Ứng Dụng</h1>
-  <p class="subtitle-glass">
-    <b>Lê Quốc Khang</b> • IT Bệnh Viện Tâm Trí Đồng Tháp
-  </p>
+  <div class="title">📦 Ứng Dụng</div>
+  <div class="sub"><b>Lê Quốc Khang</b> • IT Bệnh Viện Tâm Trí Đồng Tháp</div>
 </div>
 
-<div class="search-box">
-  <input id="search" placeholder="🔍 Tìm phần mềm..." />
+<div class="search">
+  <input id="search" placeholder="🔍 Tìm phần mềm...">
 </div>
 
 <div class="container">
-  <div id="list" class="list">
-    <div class="loading">Đang tải dữ liệu…</div>
-  </div>
+  <div id="list" class="list"></div>
 </div>
 
-<div class="footer">
-  © 2026 • Phòng IT Tâm Trí Đồng Tháp
-</div>
+<div class="footer">© 2026 • Phòng IT Tâm Trí Đồng Tháp</div>
 
-<!-- FLOAT CONTACT -->
-<div class="contact-fab" id="fab">
+<div class="fab" id="fab">
   <div class="fab-menu">
-    <a href="https://zalo.me/0399667472" target="_blank" class="fab-item">
+    <a class="fab-item" href="https://zalo.me/0399667472" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg">
     </a>
-    <a href="https://facebook.com/atm1111z" target="_blank" class="fab-item">
+    <a class="fab-item" href="https://facebook.com/atm1111z" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg">
     </a>
-    <a href="tel:0399667472" class="fab-item">
-      📞
-    </a>
+    <a class="fab-item" href="tel:0399667472">📞</a>
   </div>
-
-  <div class="fab-main">
-  <span class="fab-icon">💬</span>
-  <span class="fab-text">Liên hệ</span>
-</div>
+  <div class="fab-main">💬</div>
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getFirestore,collection,getDocs,query,orderBy}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCySHDY4nar2nzG6WdYMRDM8Y0aovVbJHQ",
-  authDomain: "kkkk-29e4e.firebaseapp.com",
-  projectId: "kkkk-29e4e",
+const app=initializeApp({
+  apiKey:"AIzaSyCySHDY4nar2nzG6WdYMRDM8Y0aovVbJHQ",
+  projectId:"kkkk-29e4e"
+});
+const db=getFirestore(app);
+
+const list=document.getElementById("list");
+const search=document.getElementById("search");
+let data=[];
+
+const render=d=>{
+  list.innerHTML="";
+  d.forEach(i=>{
+    const el=document.createElement("div");
+    el.className="item";
+    el.innerHTML=`
+      <b>${i.name}</b>
+      <div class="meta">
+        ${i.type?`<span class="badge">🧩 ${i.type}</span>`:""}
+        ${i.os?`<span class="badge">🖥 ${i.os}</span>`:""}
+        ${i.source?`<span class="badge">🛡 ${i.source}</span>`:""}
+      </div>
+      <button class="btn">⬇ Tải về</button>
+    `;
+    el.onmousemove=e=>{
+      const r=el.getBoundingClientRect();
+      el.style.setProperty("--x",e.clientX-r.left+"px");
+      el.style.setProperty("--y",e.clientY-r.top+"px");
+    };
+    el.querySelector(".btn").onclick=()=>{
+      const b=el.querySelector(".btn");
+      b.classList.add("loading");
+      b.innerText="Đang mở...";
+      setTimeout(()=>{
+        window.open(i.link,"_blank");
+        b.classList.remove("loading");
+        b.innerText="⬇ Tải về";
+      },500);
+    };
+    list.appendChild(el);
+  });
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+(async()=>{
+  const q=query(collection(db,"download"),orderBy("time","desc"));
+  const s=await getDocs(q);
+  data=s.docs.map(d=>d.data());
+  render(data);
+})();
 
-const list = document.getElementById("list");
-const searchInput = document.getElementById("search");
-let allData = [];
+search.oninput=()=>render(
+  data.filter(i=>i.name.toLowerCase().includes(search.value.toLowerCase()))
+);
 
-function render(data) {
-  list.innerHTML = "";
-
-  if (!data.length) {
-    list.innerHTML = '<div class="empty">Không tìm thấy kết quả</div>';
-    return;
-  }
-
-  data.forEach(d => {
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `
-      <b>${d.name}</b>
-      <a href="${d.link}" target="_blank">
-        <button class="btn">Tải về</button>
-      </a>
-    `;
-
-    div.addEventListener("mousemove", e => {
-      const r = div.getBoundingClientRect();
-      div.style.setProperty("--x", e.clientX - r.left + "px");
-      div.style.setProperty("--y", e.clientY - r.top + "px");
-    });
-
-    list.appendChild(div);
-  });
-}
-
-async function loadData() {
-  try {
-    const q = query(collection(db, "download"), orderBy("time", "desc"));
-    const snap = await getDocs(q);
-    allData = snap.docs.map(d => d.data());
-    render(allData);
-  } catch {
-    list.innerHTML = '<div class="empty">Lỗi tải dữ liệu</div>';
-  }
-}
-
-searchInput.addEventListener("input", () => {
-  const k = searchInput.value.toLowerCase();
-  render(allData.filter(d => d.name.toLowerCase().includes(k)));
-});
-
-loadData();
-
-/* toggle contact */
-document.querySelector(".fab-main").onclick = () =>
-  document.getElementById("fab").classList.toggle("active");
+document.querySelector(".fab-main").onclick=()=>fab.classList.toggle("active");
 </script>
 
 </body>
-
 </html>
-
