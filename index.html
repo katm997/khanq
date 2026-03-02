@@ -175,6 +175,54 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .item { animation: fadeInUp 0.5s ease backwards; }
+        .folder-header {
+    background: rgba(16, 185, 129, 0.1);
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: 600;
+    color: var(--primary);
+    border: 1px solid var(--primary-glow);
+}
+.folder-header:hover {
+    background: rgba(16, 185, 129, 0.2);
+}
+.folder-content {
+    margin-top: 10px;
+}
+/* Đảm bảo nhóm thư mục chiếm toàn bộ chiều rộng */
+.folder-group {
+    grid-column: 1 / -1; 
+    margin-bottom: 30px;
+}
+
+/* Header của thư mục */
+.folder-header {
+    background: rgba(16, 185, 129, 0.1);
+    padding: 15px 20px;
+    border-radius: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: var(--primary);
+    border: 1px solid var(--primary-glow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Quan trọng: Đây là lưới bên trong mỗi thư mục */
+.folder-inner-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.folder-content {
+    transition: all 0.3s ease;
+}
+
     </style>
 </head>
 
@@ -211,65 +259,106 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    const app = initializeApp({
-        apiKey: "AIzaSyCySHDY4nar2nzG6WdYMRDM8Y0aovVbJHQ",
-        projectId: "kkkk-29e4e"
+const app = initializeApp({
+    apiKey: "AIzaSyCySHDY4nar2nzG6WdYMRDM8Y0aovVbJHQ",
+    projectId: "kkkk-29e4e"
+});
+const db = getFirestore(app);
+
+const list = document.getElementById("list");
+const search = document.getElementById("search");
+let data = [];
+
+const render = (items) => {
+    const keyword = search.value.trim().toLowerCase();
+    list.innerHTML = items.length ? "" : "<p style='text-align:center; grid-column: 1/-1; opacity: 0.5;'>Không tìm thấy ứng dụng phù hợp...</p>";
+
+    const grouped = {};
+    items.forEach(i => {
+        const folder = i.folder?.trim() || "Khác";
+        if (!grouped[folder]) grouped[folder] = [];
+        grouped[folder].push(i);
     });
-    const db = getFirestore(app);
 
-    const list = document.getElementById("list");
-    const search = document.getElementById("search");
-    let data = [];
+    Object.entries(grouped).forEach(([folder, apps]) => {
+        const folderId = folder.replace(/\s+/g, "_");
+        
+        // Nếu đang tìm kiếm thì luôn mở (block), nếu không thì mặc định mở (hoặc ẩn tùy bạn)
+        const displayStyle = keyword.length > 0 ? "block" : "block"; 
 
-    const render = (items) => {
-        list.innerHTML = items.length ? "" : "<p style='text-align:center; grid-column: 1/-1; opacity: 0.5;'>Không tìm thấy ứng dụng phù hợp...</p>";
-        items.forEach((i, index) => {
-            const el = document.createElement("div");
-            el.className = "item";
-            el.style.animationDelay = `${index * 0.05}s`;
-            el.innerHTML = `
-                <b>${i.name}</b>
-                <div class="meta">
-                    ${i.type ? `<span class="badge">${i.type}</span>` : ""}
-                    ${i.os ? `<span class="badge">${i.os}</span>` : ""}
-                    ${i.source ? `<span class="badge">Official</span>` : ""}
+        const section = document.createElement("div");
+        section.className = "folder-group";
+        section.innerHTML = `
+            <div class="folder-header" onclick="toggleFolder('${folderId}')">
+                <h3 style="margin: 0;">📁 ${folder} (${apps.length})</h3>
+                <span id="icon-${folderId}">${displayStyle === 'block' ? '▲' : '▼'}</span>
+            </div>
+            <div class="folder-content" id="folder-${folderId}" style="display: ${displayStyle};">
+                <div class="folder-inner-list">
+                    ${apps.map((i, index) => `
+                        <div class="item" style="animation-delay: ${index * 0.05}s">
+                            <b>${i.name}</b>
+                            <div class="meta">
+                                ${i.type ? `<span class="badge">${i.type}</span>` : ""}
+                                ${i.os ? `<span class="badge">${i.os}</span>` : ""}
+                                ${i.source ? `<span class="badge">Official</span>` : ""}
+                            </div>
+                            <button class="btn" onclick="downloadApp('${i.link}', this)">
+                                <span class="icon">📥</span> Tải xuống
+                            </button>
+                        </div>
+                    `).join("")}
                 </div>
-                <button class="btn">
-                    <span class="icon">📥</span> Tải xuống
-                </button>
-            `;
+            </div>
+        `;
+        list.appendChild(section);
+    });
+};
 
-            el.querySelector(".btn").onclick = (e) => {
-                const b = e.currentTarget;
-                b.classList.add("loading");
-                b.innerHTML = "⌛ Đang kết nối...";
-                setTimeout(() => {
-                    window.open(i.link, "_blank");
-                    b.classList.remove("loading");
-                    b.innerHTML = "📥 Tải xuống";
-                }, 800);
-            };
-            list.appendChild(el);
-        });
-    };
+(async () => {
+    try {
+        const q = query(collection(db, "download"), orderBy("time", "desc"));
+        const s = await getDocs(q);
+        data = s.docs.map(d => d.data());
+        render(data);
+    } catch (err) {
+        list.innerHTML = "Lỗi tải dữ liệu. Vui lòng kiểm tra cấu hình Firebase.";
+    }
+})();
 
-    (async () => {
-        try {
-            const q = query(collection(db, "download"), orderBy("time", "desc"));
-            const s = await getDocs(q);
-            data = s.docs.map(d => d.data());
-            render(data);
-        } catch (err) {
-            list.innerHTML = "Lỗi tải dữ liệu. Vui lòng kiểm tra cấu hình Firebase.";
-        }
-    })();
+// Logic tìm kiếm đa năng
+search.oninput = () => {
+    const keyword = search.value.toLowerCase();
+    const filtered = data.filter(i => {
+        const nameMatch = i.name.toLowerCase().includes(keyword);
+        const folderMatch = (i.folder || "").toLowerCase().includes(keyword);
+        return nameMatch || folderMatch;
+    });
+    render(filtered);
+};
 
-    search.oninput = () => {
-        const filtered = data.filter(i => i.name.toLowerCase().includes(search.value.toLowerCase()));
-        render(filtered);
-    };
+window.toggleFolder = (id) => {
+    const el = document.getElementById("folder-" + id);
+    const icon = document.getElementById("icon-" + id);
+    if (el) {
+        const isHidden = el.style.display === "none";
+        el.style.display = isHidden ? "block" : "none";
+        if(icon) icon.innerText = isHidden ? "▲" : "▼";
+    }
+};
+
+window.downloadApp = (link, btn) => {
+    btn.classList.add("loading");
+    btn.innerHTML = "⌛ Đang kết nối...";
+    setTimeout(() => {
+        window.open(link, "_blank");
+        btn.classList.remove("loading");
+        btn.innerHTML = "📥 Tải xuống";
+    }, 800);
+};
+
 </script>
 
 </body>
