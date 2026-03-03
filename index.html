@@ -139,82 +139,7 @@
         }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-        /* Mobile Responsive */
-        @media (max-width: 992px) {
-            aside { display: none; }
-            main { padding: 20px; }
-            .search-box { width: 100%; }
-        }
-        .mobile-nav {
-    display: none;
-}
-
-.mobile-support {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .mobile-support {
-        display: block;
-        position: fixed;
-        bottom: 85px;
-        right: 16px;
-        z-index: 1000;
-    }
-
-    .support-toggle {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: var(--accent);
-        border: none;
-        color: #000;
-        font-size: 22px;
-        box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    .support-panel {
-        position: absolute;
-        bottom: 70px;
-        right: 0;
-        background: rgba(15,23,42,0.95);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 14px;
-        width: 200px;
-        opacity: 0;
-        transform: scale(0.9);
-        pointer-events: none;
-    }
-
-    .support-panel.active {
-        opacity: 1;
-        transform: scale(1);
-        pointer-events: auto;
-    }
-
-    .support-panel p {
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: var(--text-secondary);
-    }
-
-    .support-actions {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    .support-actions i {
-        font-size: 22px;
-    }
-
-    .support-actions img {
-        width: 22px;
-        height: 22px;
-    }
-}
+       
    </style>
 </head>
 <body>
@@ -402,8 +327,7 @@
     };
 
     fetchApps();
-    function toggleSupport() {
-    document.getElementById('supportPanel').classList.toggle('active');
+   
 }
 </script>
 
@@ -414,29 +338,10 @@
     }
     
 </style>
-<!-- Mobile Support -->
-<div class="mobile-support">
-    <button class="support-toggle" onclick="toggleSupport()">
-        <i class="fas fa-headset"></i>
-    </button>
 
-    <div class="support-panel" id="supportPanel">
-        <p>Hỗ trợ kỹ thuật</p>
-        <div class="support-actions">
-            <a href="https://facebook.com/atm1111z" target="_blank">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="https://zalo.me/0399667472" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg">
-            </a>
-            <a href="tel:0399667472">
-                <i class="fas fa-phone-alt"></i>
-            </a>
-        </div>
-    </div>
-</div>
 </body>
 </html>
+
 
 
 
