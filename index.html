@@ -145,70 +145,7 @@
             main { padding: 20px; }
             .search-box { width: 100%; }
         }
- /* ===== MOBILE FIX DỨT ĐIỂM ===== */
-@media screen and (max-width: 768px) {
-
-  html, body {
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  /* PHÁ FLEX DESKTOP */
-  body {
-    display: block !important;
-  }
-
-  /* XÓA HẲN SIDEBAR */
-  aside {
-    display: none !important;
-    position: static !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
-
-  /* MAIN CHIẾM TOÀN BỘ */
-  main {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 16px !important;
-  }
-
-  /* HEADER XẾP DỌC */
-  header {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px;
-  }
-
-  .user-info {
-    display: none !important;
-  }
-
-  /* GRID MOBILE – FIX LỖI MINMAX */
-  .app-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  /* CARD */
-  .app-card {
-    width: 100% !important;
-  }
-
-  /* FOOTER CARD */
-  .app-footer {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px;
-  }
-
-  .btn-download {
-    width: 100% !important;
-    justify-content: center;
-  }
-}
-    </style>
+   </style>
 </head>
 <body>
 
@@ -407,6 +344,7 @@
 
 </body>
 </html>
+
 
 
 
