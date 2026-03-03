@@ -149,39 +149,70 @@
     display: none;
 }
 
+.mobile-support {
+    display: none;
+}
+
 @media (max-width: 768px) {
-    .mobile-nav {
+    .mobile-support {
+        display: block;
         position: fixed;
-        bottom: 0;
-        left: 0;
+        bottom: 85px;
+        right: 16px;
+        z-index: 1000;
+    }
+
+    .support-toggle {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: none;
+        color: #000;
+        font-size: 22px;
+        box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .support-panel {
+        position: absolute;
+        bottom: 70px;
         right: 0;
-        height: 65px;
-        background: rgba(15,23,42,0.9);
-        backdrop-filter: blur(20px);
-        border-top: 1px solid var(--border-color);
+        background: rgba(15,23,42,0.95);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 14px;
+        width: 200px;
+        opacity: 0;
+        transform: scale(0.9);
+        pointer-events: none;
+    }
+
+    .support-panel.active {
+        opacity: 1;
+        transform: scale(1);
+        pointer-events: auto;
+    }
+
+    .support-panel p {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text-secondary);
+    }
+
+    .support-actions {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        z-index: 999;
     }
 
-    .mobile-nav button {
-        background: none;
-        border: none;
-        color: var(--text-secondary);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        font-size: 11px;
+    .support-actions i {
+        font-size: 22px;
     }
 
-    .mobile-nav i {
-        font-size: 18px;
-    }
-
-    body {
-        padding-bottom: 70px;
+    .support-actions img {
+        width: 22px;
+        height: 22px;
     }
 }
    </style>
@@ -371,6 +402,9 @@
     };
 
     fetchApps();
+    function toggleSupport() {
+    document.getElementById('supportPanel').classList.toggle('active');
+}
 </script>
 
 <style>
@@ -380,22 +414,30 @@
     }
     
 </style>
-<nav class="mobile-nav">
-    <button onclick="filterByFolder('all')">
-        <i class="fas fa-grid-2"></i>
-        <span>Tất cả</span>
+<!-- Mobile Support -->
+<div class="mobile-support">
+    <button class="support-toggle" onclick="toggleSupport()">
+        <i class="fas fa-headset"></i>
     </button>
-    <button onclick="openFolderDrawer()">
-        <i class="fas fa-folder"></i>
-        <span>Danh mục</span>
-    </button>
-    <button onclick="document.getElementById('searchInput').focus()">
-        <i class="fas fa-search"></i>
-        <span>Tìm</span>
-    </button>
-</nav>
+
+    <div class="support-panel" id="supportPanel">
+        <p>Hỗ trợ kỹ thuật</p>
+        <div class="support-actions">
+            <a href="https://facebook.com/atm1111z" target="_blank">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://zalo.me/0399667472" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg">
+            </a>
+            <a href="tel:0399667472">
+                <i class="fas fa-phone-alt"></i>
+            </a>
+        </div>
+    </div>
+</div>
 </body>
 </html>
+
 
 
 
