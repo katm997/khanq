@@ -145,65 +145,66 @@
             main { padding: 20px; }
             .search-box { width: 100%; }
         }
-        /* ===== FIX MOBILE TRIỆT ĐỂ ===== */
-@media (max-width: 768px) {
+ /* ===== MOBILE FIX DỨT ĐIỂM ===== */
+@media screen and (max-width: 768px) {
 
-  /* 1. BODY KHÔNG FLEX TRÊN MOBILE */
-  body {
-    display: block;
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
   }
 
-  /* 2. ẨN SIDEBAR */
+  /* PHÁ FLEX DESKTOP */
+  body {
+    display: block !important;
+  }
+
+  /* XÓA HẲN SIDEBAR */
   aside {
+    display: none !important;
+    position: static !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* MAIN CHIẾM TOÀN BỘ */
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 16px !important;
+  }
+
+  /* HEADER XẾP DỌC */
+  header {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+  }
+
+  .user-info {
     display: none !important;
   }
 
-  /* 3. MAIN FULL MÀN HÌNH */
-  main {
-    max-width: 100%;
-    margin: 0;
-    padding: 16px;
-  }
-
-  /* 4. HEADER XẾP DỌC */
-  header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  /* 5. SEARCH FULL WIDTH */
-  .search-box {
-    width: 100%;
-  }
-
-  /* 6. ẨN USER INFO (HOẶC ĐỂ SAU) */
-  .user-info {
-    display: none;
-  }
-
-  /* 7. GRID 1 CỘT CHẮC CHẮN */
+  /* GRID MOBILE – FIX LỖI MINMAX */
   .app-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
   }
 
-  /* 8. CARD GỌN LẠI */
+  /* CARD */
   .app-card {
-    padding: 16px;
-    border-radius: 18px;
+    width: 100% !important;
   }
 
-  /* 9. FOOTER CARD XẾP DỌC */
+  /* FOOTER CARD */
   .app-footer {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px;
   }
 
-  /* 10. NÚT DOWNLOAD FULL WIDTH */
   .btn-download {
-    width: 100%;
+    width: 100% !important;
     justify-content: center;
   }
 }
@@ -406,5 +407,6 @@
 
 </body>
 </html>
+
 
 
