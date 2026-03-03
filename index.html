@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Khanq IT | Premium Design</title>
+    <title>Software Hub | Premium Design</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -139,8 +139,13 @@
         }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-       
-   </style>
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            aside { display: none; }
+            main { padding: 20px; }
+            .search-box { width: 100%; }
+        }
+    </style>
 </head>
 <body>
 
@@ -327,8 +332,6 @@
     };
 
     fetchApps();
-   
-}
 </script>
 
 <style>
@@ -341,10 +344,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
