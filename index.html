@@ -215,8 +215,9 @@
     </main>
 
 <script type="module">
+    // 1. Thêm "doc" vào danh sách import ở đây
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, orderBy, increment, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const app = initializeApp({
         apiKey: "AIzaSyCySHDY4nar2nzG6WdYMRDM8Y0aovVbJHQ",
@@ -225,12 +226,12 @@
     const db = getFirestore(app);
 
     let allData = [];
-    let currentFolder = 'all';
 
     const fetchApps = async () => {
         const q = query(collection(db, "download"), orderBy("time", "desc"));
         const snapshot = await getDocs(q);
-        allData = snapshot.docs.map(doc => doc.data());
+        // 2. SỬA TẠI ĐÂY: Phải lấy doc.id thì mới đếm lượt tải được
+        allData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
         renderFolders();
         renderApps(allData);
     };
@@ -238,6 +239,8 @@
     const renderFolders = () => {
         const folders = [...new Set(allData.map(item => item.folder || "Khác"))];
         const nav = document.getElementById('folder-list');
+        nav.innerHTML = '<span class="nav-label">Phân loại</span><a href="#" class="nav-item active" onclick="filterByFolder(\'all\')"><i class="fas fa-grid-2"></i> Tất cả ứng dụng</a>';
+        
         folders.forEach(f => {
             const link = document.createElement('a');
             link.className = 'nav-item';
@@ -256,22 +259,22 @@
         const grid = document.getElementById('app-list');
         grid.innerHTML = items.length ? "" : "<p>Không tìm thấy ứng dụng...</p>";
 
-        items.forEach((app, index) => {
+        items.forEach((appItem, index) => {
             const card = document.createElement('div');
             card.className = 'app-card';
             card.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.05}s`;
             card.innerHTML = `
                 <div class="app-icon">
-                    <i class="${getIcon(app.name)}"></i>
+                    <i class="${getIcon(appItem.name)}"></i>
                 </div>
-                <h3>${app.name}</h3>
+                <h3>${appItem.name}</h3>
                 <div class="tags">
-                    <span class="tag">${app.type || 'Phần mềm'}</span>
-                    <span class="tag">${app.os || 'Windows'}</span>
+                    <span class="tag">${appItem.type || 'Phần mềm'}</span>
+                    <span class="tag">${appItem.os || 'Windows'}</span>
                 </div>
                 <div class="app-footer">
                     <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-check-circle"></i> Verified</span>
-                    <button class="btn-download" onclick="downloadHandler('${app.link}', this)">
+                    <button class="btn-download" onclick="downloadHandler('${appItem.id}', '${appItem.link}', this)">
                         <i class="fas fa-download"></i> Tải xuống
                     </button>
                 </div>
@@ -280,7 +283,6 @@
         });
     };
 
-    // Hàm phụ trợ để tự gán icon dựa theo tên phần mềm cho đẹp
     const getIcon = (name) => {
         const n = name.toLowerCase();
         if(n.includes('office')) return 'fab fa-microsoft';
@@ -291,10 +293,33 @@
     }
 
     window.filterByFolder = (folder) => {
-        currentFolder = folder;
         document.getElementById('current-category').innerText = folder === 'all' ? 'Tất cả ứng dụng' : folder;
         const filtered = folder === 'all' ? allData : allData.filter(i => i.folder === folder);
         renderApps(filtered);
+    };
+
+    // HÀM XỬ LÝ TẢI VÀ ĐẾM LƯỢT
+    window.downloadHandler = async (id, link, btn) => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang tải...`;
+        
+        try {
+            // Thực hiện cộng 1 vào cột downloads trên Firebase
+            const appRef = doc(db, "download", id);
+            await updateDoc(appRef, {
+                downloads: increment(1)
+            });
+        } catch (err) {
+            console.error("Lỗi đếm lượt tải:", err);
+        }
+
+        // Mở link tải cho khách
+        window.open(link, '_blank');
+        
+        // Reset lại nút bấm
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+        }, 1000);
     };
 
     document.getElementById('searchInput').oninput = (e) => {
@@ -306,15 +331,6 @@
         renderApps(filtered);
     };
 
-    window.downloadHandler = (link, btn) => {
-        const original = btn.innerHTML;
-        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Chờ...`;
-        setTimeout(() => {
-            window.open(link, '_blank');
-            btn.innerHTML = original;
-        }, 1000);
-    };
-
     fetchApps();
 </script>
 
@@ -323,6 +339,7 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
+    
 </style>
 
 </body>
