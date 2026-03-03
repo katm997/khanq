@@ -286,7 +286,7 @@ const render = (items) => {
         const folderId = folder.replace(/\s+/g, "_");
         
         // Nếu đang tìm kiếm thì luôn mở (block), nếu không thì mặc định mở (hoặc ẩn tùy bạn)
-        const displayStyle = keyword.length > 0 ? "block" : "block"; 
+        const displayStyle = keyword.length > 0 ? "block" : "none"; 
 
         const section = document.createElement("div");
         section.className = "folder-group";
@@ -363,3 +363,4 @@ window.downloadApp = (link, btn) => {
 
 </body>
 </html>
+
