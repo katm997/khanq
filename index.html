@@ -85,6 +85,24 @@
         .user-text p { font-size: 14px; font-weight: 600; }
         .user-text span { font-size: 12px; color: var(--text-secondary); }
 
+        .btn-auth {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-auth:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
         /* ===== CONTENT GRID ===== */
         .section-title { font-size: 24px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
         
@@ -131,6 +149,51 @@
         }
         .btn-download:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 0 15px var(--accent-glow); }
 
+        /* MODAL DANG NHAP */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 999; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        }
+        .modal-header h3 { font-size: 18px; color: #fff; }
+        .modal-close { cursor: pointer; color: var(--text-secondary); font-size: 20px; }
+        .modal-close:hover { color: #fff; }
+
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+        .input-group input {
+            width: 100%; padding: 12px; border-radius: 10px;
+            border: 1px solid var(--border-color); background: rgba(255,255,255,0.03);
+            color: #fff; outline: none; font-size: 14px;
+        }
+        .input-group input:focus { border-color: var(--accent); }
+
+        .btn-submit {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            background: var(--accent); color: #000; font-weight: 700; cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-submit:hover { filter: brightness(1.1); }
+        .login-error { color: #ef4444; font-size: 12px; margin-top: 10px; text-align: center; }
+
         /* Loading Animation */
         .loading-shimmer {
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
@@ -163,26 +226,22 @@
             <a href="#" class="nav-item active" onclick="filterByFolder('all')">
                 <i class="fas fa-grid-2"></i> Tất cả ứng dụng
             </a>
-            </nav>
+        </nav>
 
         <div style="margin-top: auto; padding: 20px; background: var(--card-bg); border-radius: 15px; border: 1px solid var(--border-color);">
-    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; font-weight: 600;">Hỗ trợ kỹ thuật</p>
-    <div style="display: flex; gap: 20px; align-items: center;">
-        
-        <a href="https://facebook.com/atm1111z" target="_blank" class="contact-icon" title="Facebook">
-            <i class="fab fa-facebook" style="font-size: 24px; color: #1877F2;"></i>
-        </a>
-        
-        <a href="https://zalo.me/0399667472" target="_blank" class="contact-icon" title="Zalo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo" style="width: 24px; height: 24px;">
-        </a>
-
-        <a href="tel:0399667472" class="contact-icon" title="Gọi điện">
-            <i class="fas fa-phone-alt" style="font-size: 20px; color: var(--accent);"></i>
-        </a>
-    </div>
-</div>
-</div>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; font-weight: 600;">Hỗ trợ kỹ thuật</p>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <a href="https://facebook.com/atm1111z" target="_blank" class="contact-icon" title="Facebook">
+                    <i class="fab fa-facebook" style="font-size: 24px; color: #1877F2;"></i>
+                </a>
+                <a href="https://zalo.me/0399667472" target="_blank" class="contact-icon" title="Zalo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo" style="width: 24px; height: 24px;">
+                </a>
+                <a href="tel:0399667472" class="contact-icon" title="Gọi điện">
+                    <i class="fas fa-phone-alt" style="font-size: 20px; color: var(--accent);"></i>
+                </a>
+            </div>
+        </div>
     </aside>
 
     <main>
@@ -194,19 +253,21 @@
 
             <div class="user-info">
                 <div class="user-text">
-                    <p>Khanq 66</p>
-                    <span>Administrator</span>
+                    <p id="user-display-name">Khanq 66</p>
+                    <span id="user-display-role">Administrator</span>
                 </div>
                 <div style="width: 45px; height: 45px; border-radius: 12px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #000;">
                     TTDT
                 </div>
+                <button class="btn-auth" id="btn-login-trigger" onclick="openLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
             </div>
         </header>
 
         <section id="content-area">
             <h2 class="section-title" id="current-category">Tất cả ứng dụng</h2>
-            <div class="app-grid" id="app-list">
-                </div>
+            <div class="app-grid" id="app-list"></div>
         </section>
 
         <footer style="margin-top: 80px; text-align: center; color: var(--text-secondary); font-size: 13px;">
@@ -214,26 +275,77 @@
         </footer>
     </main>
 
+    <!-- MODAL DANG NHAP -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Đăng Nhập Admin</h3>
+                <i class="fas fa-times modal-close" onclick="closeLoginModal()"></i>
+            </div>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 15px;">
+                Bạn cần đăng nhập tài khoản quản trị để tải ứng dụng trong thư mục <b>Tool Of Admin</b>.
+            </p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Email / Tài khoản</label>
+                    <input type="email" id="loginEmail" placeholder="admin@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit" id="btnLoginSubmit">Đăng Nhập</button>
+                <div class="login-error" id="loginError"></div>
+            </form>
+        </div>
+    </div>
+
 <script type="module">
-    // 1. Thêm "doc" vào danh sách import ở đây
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy, increment, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    const app = initializeApp({
+    const firebaseConfig = {
         apiKey: "AIzaSyCySHDY4nar2nzG6WdYMRDM8Y0aovVbJHQ",
         projectId: "kkkk-29e4e"
-    });
+    };
+
+    const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
     let allData = [];
+    let currentUser = null;
+
+    // Lắng nghe trạng thái đăng nhập
+    onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        const btnLoginTrigger = document.getElementById('btn-login-trigger');
+        const userRoleText = document.getElementById('user-display-role');
+
+        if (user) {
+            userRoleText.innerText = user.email;
+            btnLoginTrigger.innerHTML = `<i class="fas fa-sign-out-alt"></i> Đăng xuất`;
+            btnLoginTrigger.onclick = () => {
+                signOut(auth);
+            };
+        } else {
+            userRoleText.innerText = "Khách hàng";
+            btnLoginTrigger.innerHTML = `<i class="fas fa-sign-in-alt"></i> Đăng nhập`;
+            btnLoginTrigger.onclick = openLoginModal;
+        }
+    });
 
     const fetchApps = async () => {
-        const q = query(collection(db, "download"), orderBy("time", "desc"));
-        const snapshot = await getDocs(q);
-        // 2. SỬA TẠI ĐÂY: Phải lấy doc.id thì mới đếm lượt tải được
-        allData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-        renderFolders();
-        renderApps(allData);
+        try {
+            const q = query(collection(db, "download"), orderBy("time", "desc"));
+            const snapshot = await getDocs(q);
+            allData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            renderFolders();
+            renderApps(allData);
+        } catch (err) {
+            console.error("Lỗi lấy dữ liệu:", err);
+        }
     };
 
     const renderFolders = () => {
@@ -263,6 +375,9 @@
             const card = document.createElement('div');
             card.className = 'app-card';
             card.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.05}s`;
+            
+            const isToolAdmin = appItem.folder && appItem.folder.trim().toLowerCase() === "tool of admin";
+
             card.innerHTML = `
                 <div class="app-icon">
                     <i class="${getIcon(appItem.name)}"></i>
@@ -271,11 +386,12 @@
                 <div class="tags">
                     <span class="tag">${appItem.type || 'Phần mềm'}</span>
                     <span class="tag">${appItem.os || 'Windows'}</span>
+                    ${isToolAdmin ? '<span class="tag" style="color: #f59e0b; background: rgba(245,158,11,0.1);"><i class="fas fa-lock"></i> Yêu cầu Admin</span>' : ''}
                 </div>
                 <div class="app-footer">
                     <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-check-circle"></i> Verified</span>
-                    <button class="btn-download" onclick="downloadHandler('${appItem.id}', '${appItem.link}', this)">
-                        <i class="fas fa-download"></i> Tải xuống
+                    <button class="btn-download" onclick="downloadHandler('${appItem.id}', '${appItem.link}', '${appItem.folder}', this)">
+                        <i class="fas ${isToolAdmin ? 'fa-lock' : 'fa-download'}"></i> Tải xuống
                     </button>
                 </div>
             `;
@@ -298,13 +414,20 @@
         renderApps(filtered);
     };
 
-    // HÀM XỬ LÝ TẢI VÀ ĐẾM LƯỢT
-    window.downloadHandler = async (id, link, btn) => {
+    // HÀM XỬ LÝ TẢI VÀ KIỂM TRA ĐĂNG NHẬP
+    window.downloadHandler = async (id, link, folder, btn) => {
+        // Kiểm tra nếu thư mục là "Tool Of Admin" và chưa đăng nhập
+        const isToolAdmin = folder && folder.trim().toLowerCase() === "tool of admin";
+        
+        if (isToolAdmin && !currentUser) {
+            openLoginModal();
+            return;
+        }
+
         const originalText = btn.innerHTML;
         btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang tải...`;
         
         try {
-            // Thực hiện cộng 1 vào cột downloads trên Firebase
             const appRef = doc(db, "download", id);
             await updateDoc(appRef, {
                 downloads: increment(1)
@@ -313,13 +436,43 @@
             console.error("Lỗi đếm lượt tải:", err);
         }
 
-        // Mở link tải cho khách
         window.open(link, '_blank');
         
-        // Reset lại nút bấm
         setTimeout(() => {
             btn.innerHTML = originalText;
         }, 1000);
+    };
+
+    // Quản lý Modal
+    window.openLoginModal = () => {
+        document.getElementById('loginModal').classList.add('active');
+        document.getElementById('loginError').innerText = "";
+    };
+
+    window.closeLoginModal = () => {
+        document.getElementById('loginModal').classList.remove('active');
+    };
+
+    // Form Đăng nhập
+    document.getElementById('loginForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPassword').value;
+        const errDiv = document.getElementById('loginError');
+        const btnSubmit = document.getElementById('btnLoginSubmit');
+
+        try {
+            btnSubmit.innerText = "Đang xác thực...";
+            btnSubmit.disabled = true;
+            await signInWithEmailAndPassword(auth, email, pass);
+            closeLoginModal();
+            btnSubmit.innerText = "Đăng Nhập";
+            btnSubmit.disabled = false;
+        } catch (err) {
+            btnSubmit.innerText = "Đăng Nhập";
+            btnSubmit.disabled = false;
+            errDiv.innerText = "Tài khoản hoặc mật khẩu không chính xác!";
+        }
     };
 
     document.getElementById('searchInput').oninput = (e) => {
@@ -339,11 +492,7 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
-    
 </style>
 
 </body>
 </html>
-
-
-
